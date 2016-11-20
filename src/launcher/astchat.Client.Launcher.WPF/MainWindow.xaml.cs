@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -210,17 +211,42 @@ namespace astchat.Client.Launcher.WPF
 					time = dt.ToString("yyyy-MM-dd hh:mm");
 
 				message = ClientManager.ParsePureText(e.Data);
+				Inline inlineMessage = null;
 
-				string imageUrl;
+				// 把新建控件操作放在this.Dispatcher.(Begin)Invoke方法里，可解决多线程的对象访问问题。
+				this.Dispatcher.Invoke(new Action(() =>
+				{
+				string imageUrl; Image image;
 				if (ClientManager.TryParseImage(e.Data, out imageUrl))
-					message = string.Format("目前版本不支持图片浏览，请复制以下链接至浏览器地址栏：{1}{0}", imageUrl, Environment.NewLine);
+				{
+					//message = string.Format("目前版本不支持图片浏览，请复制以下链接至浏览器地址栏：{1}{0}", imageUrl, Environment.NewLine);
+
+						image = new Image();
+						image.Source = new BitmapImage(new Uri(imageUrl));
+						inlineMessage = new InlineUIContainer(image);
+				}
+				else
+					inlineMessage = new Run(message);
+
+				}));
+
+
 
 				record = string.Format("{0}{2}{1}{2}{2}", time, message, Environment.NewLine);
-
-
-				this.Dispatcher.BeginInvoke(new Action(() =>
+				
+				
+				
+                this.Dispatcher.BeginInvoke(new Action(() =>
 				{
-					this.tbRecord.Text += record;
+					this.tbRecord.Inlines.AddRange(new Inline[]
+					{
+						new Run(time) { Foreground = new SolidColorBrush(Colors.Gray), FontStyle = FontStyles.Italic },
+						new Run(Environment.NewLine),
+						inlineMessage,
+                        new Run(Environment.NewLine),
+						new Run(Environment.NewLine)
+					}
+					);
 				}));
 
 			};
