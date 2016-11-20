@@ -288,7 +288,7 @@
 
                                 <!-- 正常化按钮图标 -->
                                 <Canvas x:Key="Window_Title_Button_Maximize_NormalizeContent" Background="{Binding Background, ElementName=Window_Title_Button_Maximize}">
-                                    <Polyline Stroke="{Binding Foreground, ElementName=Window_Title_Button_Maximize}" Points="12,15 12,20 17,20 17,15" StrokeThickness="1.5" SnapsToDevicePixels="True"/>
+                                    <Polyline Stroke="{Binding Foreground, ElementName=Window_Title_Button_Maximize}" Points="12,15 12,20 17,20 17,15" StrokeThickness="1" SnapsToDevicePixels="True"/>
                                     <Polyline Stroke="{Binding Foreground, ElementName=Window_Title_Button_Maximize}" Points="15,12 15,15" StrokeThickness="1" SnapsToDevicePixels="True"/>
                                     <Polyline Stroke="{Binding Foreground, ElementName=Window_Title_Button_Maximize}" Points="17,17 20,17 20,12" StrokeThickness="1" SnapsToDevicePixels="True"/>
                                     <Line Stroke="{Binding Foreground, ElementName=Window_Title_Button_Maximize}" X1="12" Y1="15" X2="17" Y2="15" StrokeThickness="1" SnapsToDevicePixels="True"/>
