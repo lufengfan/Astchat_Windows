@@ -47,9 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientManager.cs" />
-    <Compile Include="EmojiConvert.cs" />
+    <Compile Include="EmojiGallery.cs" />
     <Compile Include="EmojiInfo.cs" />
-    <Compile Include="EmojiGallary.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

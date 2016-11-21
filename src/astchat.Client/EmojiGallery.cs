@@ -9,11 +9,11 @@ using Newtonsoft.Json.Linq;
 
 namespace astchat.Client
 {
-	public static class EmojiConvert
+	public static class EmojiGallery
 	{
 		public static readonly Dictionary<string, EmojiInfo> EmojiDic;
 
-		static EmojiConvert()
+		static EmojiGallery()
 		{
 			EmojiDic = new Dictionary<string, EmojiInfo>();
 

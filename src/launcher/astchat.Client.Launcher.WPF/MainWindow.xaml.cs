@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -184,17 +185,18 @@ namespace astchat.Client.Launcher.WPF
 			WebSocket ws = manager.ConnectChannel("lobby");
 			ws.OnOpen += (sender, e) =>
 			 {
-				 this.Dispatcher.Invoke(new Action(() => this.tbRecord.Text += "lobby connected.\r\n\r\n"));
+				 this.Dispatcher.Invoke(new Action(() => this.tbRecord.Inlines.Add(new Run("lobby connected.\r\n\r\n") { Foreground = new SolidColorBrush(Colors.Gray) })));
 			 };
 			ws.OnClose += (sender, e) =>
 			{
-				this.Dispatcher.Invoke(new Action(() => this.tbRecord.Text += "lobby disconnected. \r\n\r\n"));
+				this.Dispatcher.Invoke(new Action(() => this.tbRecord.Inlines.Add(new Run("lobby disconnected. \r\n\r\n") { Foreground = new SolidColorBrush(Colors.Gray) })));
 			};
 			ws.OnError += (sender, e) =>
 			  {
 				  this.Dispatcher.Invoke(new Action(() =>
-					  this.tbRecord.Text += string.Format("lobby connect error.\r\n    {0} -> {1}\r\n{2}\r\n\r\n", e.Message, e.Exception.Message, e.Exception.StackTrace)
-					  ));
+					  this.tbRecord.Inlines.Add(new Run(
+					  string.Format("lobby connect error.\r\n    {0} -> {1}\r\n{2}\r\n\r\n", e.Message, e.Exception.Message, e.Exception.StackTrace)
+					  ) { Foreground = new SolidColorBrush(Colors.Gray) })));
 			  };
 			ws.OnMessage += (sender, e) =>
 			{
@@ -261,9 +263,9 @@ namespace astchat.Client.Launcher.WPF
 
 								#region 加载emoji
 								var lbl = new Label() { Width = 25, Height = 25 };
-								string uri = emoji_directory + EmojiConvert.EmojiDic[match.Groups["EmojiShortName"].Value].unicode + ".png";
-								Uri _uri = new Uri(uri, UriKind.Relative);
-								lbl.Background = new ImageBrush(new BitmapImage(_uri));
+								string uri = emoji_directory + EmojiGallery.EmojiDic[match.Groups["EmojiShortName"].Value].unicode + ".png";
+								if (File.Exists(uri))
+									lbl.Background = new ImageBrush(new BitmapImage(new Uri(uri)));
 								this.tbRecord.Inlines.Add(new InlineUIContainer(lbl));
 								#endregion
 
@@ -334,6 +336,113 @@ namespace astchat.Client.Launcher.WPF
 			  {
 				  manager.DisconnetChannel("lobby");
 			  };
+		}
+
+		private void gridEmojiGallery_Loaded(object sender, RoutedEventArgs e)
+		{
+			string emoji_directory = null;
+#warning 在正式发布版前明确表情文件存放路径
+#if DEBUG
+			emoji_directory = @"..\..\..\..\..\static\emoji-one\";
+#else
+#error 未明确表情文件存放路径
+#endif
+
+			var gs = from ei in EmojiGallery.EmojiDic.Values
+					 group ei by ei.category
+			into g
+					 select new
+					 {
+						 Category = g.Key,
+						 Emojis = g
+					 };
+
+			Grid gridEmojiCategory = new Grid();
+
+			List<ScrollViewer> sv_list = new List<ScrollViewer>();
+			int index = 0;
+			foreach (var g in gs)
+			{
+				string category = g.Category;
+				gridEmojiCategory.ColumnDefinitions.Add(new ColumnDefinition());
+
+				Label lblCategory = new Label();
+				lblCategory.SetValue(Grid.ColumnProperty, index);
+				lblCategory.Height = lblCategory.Width = 25;
+				string uri = emoji_directory + g.Emojis.First().unicode + ".png";
+				if (File.Exists(uri))
+					lblCategory.Background = new ImageBrush(new BitmapImage(new Uri(uri, UriKind.Relative)));
+				lblCategory.ToolTip = new ToolTip() { Content = g.Category };
+				lblCategory.MouseEnter += (_sender, _e) =>
+				 {
+					 foreach (var item in sv_list)
+					 {
+						 if (item.Name == "svEmoji_" + g.Category)
+						 {
+							 item.Visibility = Visibility.Visible;
+						 }
+						 else
+						 {
+							 item.Visibility = Visibility.Collapsed;
+						 }
+					 }
+				 };
+
+				Grid gridEmoji = new Grid();
+
+				int row, column;
+				column = (int)this.popupEmojiGallery.Width / 25;
+				row = g.Emojis.Count() / column + 1;
+				for (int i = 0; i < row; i++) gridEmoji.RowDefinitions.Add(new RowDefinition());
+				for (int i = 0; i < column; i++) gridEmoji.ColumnDefinitions.Add(new ColumnDefinition());
+				
+				int _index = 0;
+				foreach (var ei in g.Emojis)
+				{
+					Label lblEmoji = new Label();
+					lblEmoji.SetValue(Grid.RowProperty, (_index - _index % column) / column);
+					lblEmoji.SetValue(Grid.ColumnProperty, _index % column);
+					lblEmoji.Height = lblEmoji.Width = 25;
+					string _uri = emoji_directory + ei.unicode + ".png";
+					if (File.Exists(_uri))
+						lblEmoji.Background = new ImageBrush(new BitmapImage(new Uri(_uri, UriKind.Relative)));
+					lblEmoji.ToolTip = new ToolTip() { Content = ei.name };
+					lblEmoji.MouseLeftButtonUp += (_sender, _e) =>
+					{
+						string insertStr = ei.shortname;
+						this.txtMessage.SelectedText = insertStr;
+						this.txtMessage.SelectionLength = 0;
+						this.txtMessage.SelectionStart += insertStr.Length;
+					};
+
+					gridEmoji.Children.Add(lblEmoji);
+					_index++;
+				}
+				
+				ScrollViewer _sv = new ScrollViewer();
+				_sv.SetValue(Grid.RowProperty, 0);
+				_sv.Name = "svEmoji_" + g.Category;
+				_sv.Content = gridEmoji;
+				_sv.Visibility = Visibility.Collapsed;
+				gridEmoji.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Auto);
+				sv_list.Add(_sv);
+
+				gridEmojiCategory.Children.Add(lblCategory);
+				this.gridEmojiGallery.Children.Add(_sv);
+				index++;
+			}
+
+			ScrollViewer sv = new ScrollViewer();
+			sv.SetValue(Grid.RowProperty, 1);
+			sv.Content = gridEmojiCategory;
+			gridEmojiCategory.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Visible);
+			gridEmojiCategory.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
+			this.gridEmojiGallery.Children.Add(sv);
+		}
+
+		private void lblInsertEmoji_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			this.popupEmojiGallery.IsOpen = true;
 		}
 	}
 }
