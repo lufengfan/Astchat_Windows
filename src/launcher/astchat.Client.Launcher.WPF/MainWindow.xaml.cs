@@ -248,7 +248,7 @@ namespace astchat.Client.Launcher.WPF
 							string emoji_directory = null;
 #warning 在正式发布版前明确表情文件存放路径
 #if DEBUG
-							emoji_directory = @"..\..\..\..\..\img\emoji-one\";
+							emoji_directory = @"..\..\..\..\..\static\emoji-one\";
 #else
 #error 未明确表情文件存放路径
 #endif
@@ -261,7 +261,9 @@ namespace astchat.Client.Launcher.WPF
 
 								#region 加载emoji
 								var lbl = new Label() { Width = 25, Height = 25 };
-								lbl.Background = new ImageBrush(new BitmapImage(new Uri(emoji_directory + EmojiConvert.EmojiDic[match.Groups["EmojiShortName"].Value].unicode + ".png")));
+								string uri = emoji_directory + EmojiConvert.EmojiDic[match.Groups["EmojiShortName"].Value].unicode + ".png";
+								Uri _uri = new Uri(uri, UriKind.Relative);
+								lbl.Background = new ImageBrush(new BitmapImage(_uri));
 								this.tbRecord.Inlines.Add(new InlineUIContainer(lbl));
 								#endregion
 
@@ -271,6 +273,8 @@ namespace astchat.Client.Launcher.WPF
 							if (index != message.Length)
 								this.tbRecord.Inlines.Add(new Run(message.Substring(index)));
 						}
+						else
+							this.tbRecord.Inlines.Add(new Run(message));
 					}
 
 				}));

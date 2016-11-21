@@ -12,7 +12,7 @@ namespace astchat.Client
 		public string name { get; set; }
 		public string shortname { get; set; }
 		public string category { get; set; }
-		public int emoji_order { get; set; }
+		public string emoji_order { get; set; }
 		public string[] aliases { get; set; }
 		public string[] aliases_ascii { get; set; }
 		public string[] keywords { get; set; }
