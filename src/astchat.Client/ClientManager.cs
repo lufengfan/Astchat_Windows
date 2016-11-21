@@ -27,6 +27,11 @@ namespace astchat.Client
 			{
 				WebSocket ws = new WebSocket(string.Format("wss://chat.antnf.com/ws?channel={0}", channel));
 
+				if (this.socketDic.ContainsKey(channel))
+					this.socketDic.Add(channel, ws);
+				else
+					this.socketDic[channel] = ws;
+
 				return ws;
 			}
 		}

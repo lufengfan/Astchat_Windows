@@ -238,7 +238,11 @@ namespace astchat.Client.Launcher.WPF
 						//message = string.Format("目前版本不支持图片浏览，请复制以下链接至浏览器地址栏：{1}{0}", imageUrl, Environment.NewLine);
 
 						image = new Image();
-						image.Source = new BitmapImage(new Uri(imageUrl));
+						try
+						{
+							image.Source = new BitmapImage(new Uri(imageUrl));
+						}
+						catch (UriFormatException) { } // 如果Uri格式不正确就不加载图片源
 						this.tbRecord.Inlines.Add(new InlineUIContainer(image));
 					}
 					else
@@ -395,7 +399,7 @@ namespace astchat.Client.Launcher.WPF
 				row = g.Emojis.Count() / column + 1;
 				for (int i = 0; i < row; i++) gridEmoji.RowDefinitions.Add(new RowDefinition());
 				for (int i = 0; i < column; i++) gridEmoji.ColumnDefinitions.Add(new ColumnDefinition());
-				
+
 				int _index = 0;
 				foreach (var ei in g.Emojis)
 				{
@@ -418,7 +422,7 @@ namespace astchat.Client.Launcher.WPF
 					gridEmoji.Children.Add(lblEmoji);
 					_index++;
 				}
-				
+
 				ScrollViewer _sv = new ScrollViewer();
 				_sv.SetValue(Grid.RowProperty, 0);
 				_sv.Name = "svEmoji_" + g.Category;
@@ -443,6 +447,25 @@ namespace astchat.Client.Launcher.WPF
 		private void lblInsertEmoji_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
 			this.popupEmojiGallery.IsOpen = true;
+		}
+
+		private void gridImageUrl_Loaded(object sender, RoutedEventArgs e)
+		{
+			this.txtImageUrl.KeyUp += (_sender, _e) =>
+			  {
+				  if (_e.Key == Key.Enter)
+				  {
+					  if (this.txtImageUrl.Text != string.Empty)
+						  ClientManager.SendImage(manager.ConnectChannel("lobby"), this.txtImageUrl.Text);
+					  this.txtImageUrl.Clear();
+					  this.popupSendImage.IsOpen = false;
+				  }
+			  };
+		}
+
+		private void lblSendImage_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+		{
+			this.popupSendImage.IsOpen = true;
 		}
 	}
 }
