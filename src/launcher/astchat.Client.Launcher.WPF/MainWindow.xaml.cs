@@ -251,13 +251,7 @@ namespace astchat.Client.Launcher.WPF
 
 						if (matches.Count != 0)
 						{
-							string emoji_directory = null;
-#warning 在正式发布版前明确表情文件存放路径
-#if DEBUG
-							emoji_directory = @"..\..\..\..\..\static\emoji-one\";
-#else
-#error 未明确表情文件存放路径
-#endif
+							string emoji_directory = @"https://cdn.jsdelivr.net/emojione/assets/png/";
 
 							int index = 0;
 							foreach (Match match in matches)
@@ -268,7 +262,7 @@ namespace astchat.Client.Launcher.WPF
 								#region 加载emoji
 								var lbl = new Label() { Width = 25, Height = 25 };
 								string uri = emoji_directory + EmojiGallery.EmojiDic[match.Groups["EmojiShortName"].Value].unicode + ".png";
-								if (File.Exists(uri))
+								if (true)
 									lbl.Background = new ImageBrush(new BitmapImage(new Uri(uri)));
 								this.tbRecord.Inlines.Add(new InlineUIContainer(lbl));
 								#endregion
@@ -344,13 +338,7 @@ namespace astchat.Client.Launcher.WPF
 
 		private void gridEmojiGallery_Loaded(object sender, RoutedEventArgs e)
 		{
-			string emoji_directory = null;
-#warning 在正式发布版前明确表情文件存放路径
-#if DEBUG
-			emoji_directory = @"..\..\..\..\..\static\emoji-one\";
-#else
-#error 未明确表情文件存放路径
-#endif
+			string emoji_directory = @"https://cdn.jsdelivr.net/emojione/assets/png/";
 
 			var gs = from ei in EmojiGallery.EmojiDic.Values
 					 group ei by ei.category
@@ -374,8 +362,8 @@ namespace astchat.Client.Launcher.WPF
 				lblCategory.SetValue(Grid.ColumnProperty, index);
 				lblCategory.Height = lblCategory.Width = 25;
 				string uri = emoji_directory + g.Emojis.First().unicode + ".png";
-				if (File.Exists(uri))
-					lblCategory.Background = new ImageBrush(new BitmapImage(new Uri(uri, UriKind.Relative)));
+				if (true)
+					lblCategory.Background = new ImageBrush(new BitmapImage(new Uri(uri)));
 				lblCategory.ToolTip = new ToolTip() { Content = g.Category };
 				lblCategory.MouseEnter += (_sender, _e) =>
 				 {
@@ -408,8 +396,8 @@ namespace astchat.Client.Launcher.WPF
 					lblEmoji.SetValue(Grid.ColumnProperty, _index % column);
 					lblEmoji.Height = lblEmoji.Width = 25;
 					string _uri = emoji_directory + ei.unicode + ".png";
-					if (File.Exists(_uri))
-						lblEmoji.Background = new ImageBrush(new BitmapImage(new Uri(_uri, UriKind.Relative)));
+					if (true)
+						lblEmoji.Background = new ImageBrush(new BitmapImage(new Uri(_uri)));
 					lblEmoji.ToolTip = new ToolTip() { Content = ei.name };
 					lblEmoji.MouseLeftButtonUp += (_sender, _e) =>
 					{

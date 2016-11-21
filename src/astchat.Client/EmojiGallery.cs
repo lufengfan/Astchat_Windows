@@ -17,15 +17,14 @@ namespace astchat.Client
 		{
 			EmojiDic = new Dictionary<string, EmojiInfo>();
 
-			string file = null;
-#warning 在正式发布版明确emoji.json文件的位置
-#if DEBUG
-			file = @"emoji.json";
-#else
-#error 未明确emoji.json文件的位置
-#endif
+			string file = @"emoji.json";
+			string emoji_json;
+			if (File.Exists(file))
+				emoji_json = File.ReadAllText(file);
+			else
+				emoji_json = Encoding.UTF8.GetString(Properties.Resources.emoji_json);
 
-			JObject items = JsonConvert.DeserializeObject(File.ReadAllText(file)) as JObject;
+			JObject items = JsonConvert.DeserializeObject(emoji_json) as JObject;
 			foreach (JProperty emoji in items.Properties())
 			{
 				EmojiInfo ei = new EmojiInfo();
