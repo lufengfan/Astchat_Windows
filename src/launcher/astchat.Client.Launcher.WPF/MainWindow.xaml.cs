@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -32,6 +33,22 @@ namespace astchat.Client.Launcher.WPF
 			this.InitializeClientControls();
 
 			this.connect();
+
+			#region 附属启动接口
+			foreach (string executive in Directory.GetFiles(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SatelliteSelfExecutive")))
+			{
+				if (System.IO.Path.GetExtension(executive) == ".exe")
+				{
+					Process p = new Process();
+					p.StartInfo.FileName = executive;
+					p.StartInfo.RedirectStandardOutput = true;
+					p.StartInfo.UseShellExecute = false;
+					p.StartInfo.CreateNoWindow = true;
+
+					p.Start();
+				}
+			}
+			#endregion
 		}
 
 		/// <summary>
