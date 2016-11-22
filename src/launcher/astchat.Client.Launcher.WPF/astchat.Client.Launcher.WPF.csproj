@@ -7,8 +7,8 @@
     <ProjectGuid>{53BC8D91-2B34-4903-9330-FD21D9F6567D}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>astchat.Client.Launcher.WPF</RootNamespace>
-    <AssemblyName>astchat.Client.Launcher.WPF</AssemblyName>
+    <RootNamespace>Astchat.Client.Launcher.WPF</RootNamespace>
+    <AssemblyName>Astchat.Client.Launcher.WPF</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -97,9 +97,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\astchat.Client\astchat.Client.csproj">
+    <ProjectReference Include="..\..\astchat.Client\Astchat.Client.csproj">
       <Project>{d376ac74-f77d-4360-a49c-38dc4a653af6}</Project>
-      <Name>astchat.Client</Name>
+      <Name>Astchat.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

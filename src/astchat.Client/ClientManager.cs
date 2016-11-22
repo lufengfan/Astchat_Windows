@@ -6,7 +6,7 @@ using Newtonsoft.Json;
 using WebSocketSharp;
 using WebSocketSharp.Server;
 
-namespace astchat.Client
+namespace Astchat.Client
 {
 	public class ClientManager
 	{

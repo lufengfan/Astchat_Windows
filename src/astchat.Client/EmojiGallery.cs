@@ -7,7 +7,7 @@ using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace astchat.Client
+namespace Astchat.Client
 {
 	public static class EmojiGallery
 	{

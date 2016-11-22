@@ -19,7 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using WebSocketSharp;
 
-namespace astchat.Client.Launcher.WPF
+namespace Astchat.Client.Launcher.WPF
 {
 	/// <summary>
 	/// MainWindow.xaml 的交互逻辑

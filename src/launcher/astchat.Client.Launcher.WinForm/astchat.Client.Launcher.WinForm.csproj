@@ -7,8 +7,8 @@
     <ProjectGuid>{70FF35EE-DEC4-4F28-8B60-0E72783888E5}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>astchat.Client.Launcher.WinForm</RootNamespace>
-    <AssemblyName>astchat.Client.Launcher.WinForm</AssemblyName>
+    <RootNamespace>Astchat.Client.Launcher.WinForm</RootNamespace>
+    <AssemblyName>Astchat.Client.Launcher.WinForm</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -59,6 +59,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -71,9 +72,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\astchat.Client\astchat.Client.csproj">
+    <ProjectReference Include="..\..\astchat.Client\Astchat.Client.csproj">
       <Project>{d376ac74-f77d-4360-a49c-38dc4a653af6}</Project>
-      <Name>astchat.Client</Name>
+      <Name>Astchat.Client</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
