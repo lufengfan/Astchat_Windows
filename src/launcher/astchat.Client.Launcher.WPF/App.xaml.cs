@@ -5,7 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Windows;
 
-namespace astchat.Client.Launcher.WPF
+namespace Astchat.Client.Launcher.WPF
 {
 	/// <summary>
 	/// App.xaml 的交互逻辑

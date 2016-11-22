@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
-namespace astchat.Client.Launcher.WinForm
+namespace Astchat.Client.Launcher.WinForm
 {
 	static class Program
 	{

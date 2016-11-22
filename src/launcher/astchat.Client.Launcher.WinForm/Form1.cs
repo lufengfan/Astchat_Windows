@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace astchat.Client.Launcher.WinForm
+namespace Astchat.Client.Launcher.WinForm
 {
 	public partial class Form1 : Form
 	{

@@ -1,7 +1,7 @@
-﻿<Application x:Class="astchat.Client.Launcher.WPF.App"
+﻿<Application x:Class="Astchat.Client.Launcher.WPF.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:astchat.Client.Launcher.WPF"
+             xmlns:local="clr-namespace:Astchat.Client.Launcher.WPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
          

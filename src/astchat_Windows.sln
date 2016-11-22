@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "astchat.Client", "astchat.Client\astchat.Client.csproj", "{D376AC74-F77D-4360-A49C-38DC4A653AF6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astchat.Client", "Astchat.Client\Astchat.Client.csproj", "{D376AC74-F77D-4360-A49C-38DC4A653AF6}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "launcher", "launcher", "{11998D8A-D097-4CA3-A4C5-8D92854A6DC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "astchat.Client.Launcher.WinForm", "launcher\astchat.Client.Launcher.WinForm\astchat.Client.Launcher.WinForm.csproj", "{70FF35EE-DEC4-4F28-8B60-0E72783888E5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astchat.Client.Launcher.WinForm", "launcher\Astchat.Client.Launcher.WinForm\Astchat.Client.Launcher.WinForm.csproj", "{70FF35EE-DEC4-4F28-8B60-0E72783888E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "astchat.Client.Launcher.WPF", "launcher\astchat.Client.Launcher.WPF\astchat.Client.Launcher.WPF.csproj", "{53BC8D91-2B34-4903-9330-FD21D9F6567D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astchat.Client.Launcher.WPF", "launcher\Astchat.Client.Launcher.WPF\Astchat.Client.Launcher.WPF.csproj", "{53BC8D91-2B34-4903-9330-FD21D9F6567D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

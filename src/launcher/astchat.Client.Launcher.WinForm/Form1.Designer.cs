@@ -1,4 +1,4 @@
-﻿namespace astchat.Client.Launcher.WinForm
+﻿namespace Astchat.Client.Launcher.WinForm
 {
 	partial class Form1
 	{

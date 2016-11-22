@@ -1,2 +1,2 @@
-# astchat_Windows
-astchat client for Windows.
+# Astchat_Windows
+Astchat client for Windows.
