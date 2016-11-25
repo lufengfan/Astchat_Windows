@@ -97,7 +97,7 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\astchat.Client\Astchat.Client.csproj">
+    <ProjectReference Include="..\..\Astchat.Client\Astchat.Client.csproj">
       <Project>{d376ac74-f77d-4360-a49c-38dc4a653af6}</Project>
       <Name>Astchat.Client</Name>
     </ProjectReference>
