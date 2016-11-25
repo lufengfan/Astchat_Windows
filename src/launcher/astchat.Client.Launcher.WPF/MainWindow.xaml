@@ -13,8 +13,8 @@
         SizeChanged="Window_SizeChanged">
     <Window.Resources>
         <system:Double x:Key="Window_Border_Thickness">5</system:Double>
-        
-        
+
+
     </Window.Resources>
     <Window.Style>
         <Style TargetType="{x:Type Window}">
@@ -229,7 +229,7 @@
                             <ColumnDefinition></ColumnDefinition>
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        
+
                         <Label Grid.Column="0" 
                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
                                MouseLeftButtonDown="Window_Title_MouseLeftButtonDown">lobby</Label>
@@ -323,9 +323,9 @@
                             <TextBlock x:Name="tbRecord" Padding="15,0" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"></TextBlock>
                         </ScrollViewer>
                     </Grid>
-                    
+
                     <GridSplitter Grid.Row="2" Height="2" HorizontalAlignment="Center" VerticalAlignment="Top"></GridSplitter>
-                    
+
                     <Grid Grid.Row="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"></RowDefinition>
@@ -376,19 +376,19 @@
                                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                                             <ColumnDefinition></ColumnDefinition>
                                         </Grid.ColumnDefinitions>
-                                        
+
                                         <TextBlock Margin="5,5,0,5" Grid.Column="0" VerticalAlignment="Center" Text="请输入URL："></TextBlock>
                                         <TextBox Name="txtImageUrl" Padding="5" Margin="5" Grid.Column="1" VerticalAlignment="Center"></TextBox>
                                     </Grid>
                                 </Border>
                             </Popup>
                         </StackPanel>
-                        
+
 
                         <ScrollViewer Grid.Row="1">
-                        <TextBox x:Name="txtMessage" Padding="15,0" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" AcceptsTab="True"></TextBox>
+                            <TextBox x:Name="txtMessage" Padding="15,0" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" AcceptsTab="True"></TextBox>
                         </ScrollViewer>
-                        
+
                         <Button x:Name="btnSend" Grid.Row="2" HorizontalAlignment="Right" Margin="15"  Padding="10,2.5">发送(S)</Button>
                     </Grid>
                 </Grid>

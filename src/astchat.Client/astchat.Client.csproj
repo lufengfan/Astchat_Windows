@@ -49,8 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientManager.cs" />
+    <Compile Include="DataPackage.cs" />
     <Compile Include="EmojiGallery.cs" />
     <Compile Include="EmojiInfo.cs" />
+    <Compile Include="IDataJsonSerializable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

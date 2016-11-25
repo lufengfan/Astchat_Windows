@@ -5,6 +5,9 @@ using System.Text;
 
 namespace Astchat.Client
 {
+	/// <summary>
+	/// Emoji表情的信息。
+	/// </summary>
 	public class EmojiInfo
 	{
 		public string unicode { get; set; }

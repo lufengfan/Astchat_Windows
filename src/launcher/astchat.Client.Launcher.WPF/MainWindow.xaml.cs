@@ -32,7 +32,7 @@ namespace Astchat.Client.Launcher.WPF
 
 			this.InitializeClientControls();
 
-			this.connect();
+			this.connect("lobby");
 
 			#region 附属启动接口
 			foreach (string executive in Directory.GetFiles(System.IO.Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "SatelliteSelfExecutive")))
@@ -197,29 +197,30 @@ namespace Astchat.Client.Launcher.WPF
 
 
 		private static readonly ClientManager manager = new ClientManager();
-		private void connect()
+		private void connect(string channel)
 		{
-			WebSocket ws = manager.ConnectChannel("lobby");
+			WebSocket ws = manager.AddChannel("lobby");
 			ws.OnOpen += (sender, e) =>
 			 {
-				 this.Dispatcher.Invoke(new Action(() => this.tbRecord.Inlines.Add(new Run("lobby connected.\r\n\r\n") { Foreground = new SolidColorBrush(Colors.Gray) })));
+				 this.Dispatcher.Invoke(new Action(() => this.tbRecord.Inlines.Add(new Run(channel + " connected.\r\n\r\n") { Foreground = new SolidColorBrush(Colors.Gray) })));
 			 };
 			ws.OnClose += (sender, e) =>
 			{
-				this.Dispatcher.Invoke(new Action(() => this.tbRecord.Inlines.Add(new Run("lobby disconnected. \r\n\r\n") { Foreground = new SolidColorBrush(Colors.Gray) })));
+				this.Dispatcher.Invoke(new Action(() => this.tbRecord.Inlines.Add(new Run(channel + " disconnected. \r\n\r\n") { Foreground = new SolidColorBrush(Colors.Gray) })));
 			};
 			ws.OnError += (sender, e) =>
 			  {
 				  this.Dispatcher.Invoke(new Action(() =>
 					  this.tbRecord.Inlines.Add(new Run(
-					  string.Format("lobby connect error.\r\n    {0} -> {1}\r\n{2}\r\n\r\n", e.Message, e.Exception.Message, e.Exception.StackTrace)
+					  string.Format("{0} connect error.\r\n    {1} -> {2}\r\n{3}\r\n\r\n", 
+						channel, e.Message, e.Exception.Message, e.Exception.StackTrace)
 					  ) { Foreground = new SolidColorBrush(Colors.Gray) })));
 			  };
 			ws.OnMessage += (sender, e) =>
 			{
 				string record, time, message;
 
-				DateTime dt = ClientManager.FormatUTC(ClientManager.ParseTime(e.Data));
+				DateTime dt = ClientManager.FormatUTC(manager.ParseTime(e.Data));
 				if ((DateTime.Now - dt).TotalDays <= 7)
 				{
 					if (dt.DayOfWeek == DateTime.Now.DayOfWeek)
@@ -244,13 +245,13 @@ namespace Astchat.Client.Launcher.WPF
 				}));
 
 
-				message = ClientManager.ParsePureText(e.Data);
+				message = manager.ParsePureText(e.Data);
 
 				// 把新建控件操作放在this.Dispatcher.(Begin)Invoke方法里，可解决多线程的对象访问问题。
 				this.Dispatcher.Invoke(new Action(() =>
 				{
 					string imageUrl; Image image;
-					if (ClientManager.TryParseImage(e.Data, out imageUrl))
+					if (manager.TryParseImage(e.Data, out imageUrl))
 					{
 						//message = string.Format("目前版本不支持图片浏览，请复制以下链接至浏览器地址栏：{1}{0}", imageUrl, Environment.NewLine);
 
@@ -317,7 +318,7 @@ namespace Astchat.Client.Launcher.WPF
 
 			RoutedEventHandler send = (sender, e) =>
 			{
-				ClientManager.SendPureText(ws, this.txtMessage.Text);
+				manager.SendPureText(channel, this.txtMessage.Text);
 				this.Dispatcher.Invoke(new Action(() => this.txtMessage.Clear()));
 			};
 
@@ -349,7 +350,7 @@ namespace Astchat.Client.Launcher.WPF
 
 			this.Closing += (sender, e) =>
 			  {
-				  manager.DisconnetChannel("lobby");
+				  manager.RemoveChannel("lobby");
 			  };
 		}
 
@@ -461,7 +462,7 @@ namespace Astchat.Client.Launcher.WPF
 				  if (_e.Key == Key.Enter)
 				  {
 					  if (this.txtImageUrl.Text != string.Empty)
-						  ClientManager.SendImage(manager.ConnectChannel("lobby"), this.txtImageUrl.Text);
+						  manager.SendImage("lobby", this.txtImageUrl.Text);
 					  this.txtImageUrl.Clear();
 					  this.popupSendImage.IsOpen = false;
 				  }
