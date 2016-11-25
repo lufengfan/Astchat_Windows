@@ -172,22 +172,12 @@
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <TextBox Name="txtChannel" Grid.Row="0"></TextBox>
-                        <Button Name="btnConnnet" Grid.Column="2">＋</Button>
+                        <TextBox Name="txtChannel" Grid.Row="0" KeyUp="txtChannel_KeyUp"></TextBox>
+                        <Button x:Name="btnAddChannel" Grid.Column="2" Click="btnAddChannel_Click">＋</Button>
                     </Grid>
 
-                    <StackPanel Grid.Row="1">
-                        <Grid Background="#10000000">
-
-                            <Grid.Style>
-                                <Style TargetType="{x:Type Grid}">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="#70000000"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Grid.Style>
+                    <StackPanel x:Name="spChannelList" Grid.Row="1">
+                        <Grid x:Name="gChannel" Background="#00000000" Visibility="Collapsed">
 
                             <Grid Margin="15">
                                 <Grid.ColumnDefinitions>
@@ -197,7 +187,7 @@
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
 
-                                <Image Height="35" Width="35" Source="SamLu.ico" Stretch="Fill"/>
+                                <Image x:Name="imgChannelIcon" Height="35" Width="35" Source="channel_default_icon.png" Stretch="Fill"/>
                                 <Grid Grid.Column="2" VerticalAlignment="Center">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto"/>
@@ -205,10 +195,23 @@
                                         <RowDefinition Height="Auto"/>
                                     </Grid.RowDefinitions>
 
-                                    <TextBlock Grid.Row="0"  Text="lobby"/>
-                                    <TextBlock Grid.Row="2" Foreground="Gray" Text="Hello World!"/>
+                                    <TextBlock x:Name="tbChannelName" Grid.Row="0"  Text="lobby"/>
+                                    <TextBlock x:Name="tbLatestMessageContent" Grid.Row="2" Foreground="Gray" Text="Hello World!"/>
                                 </Grid>
-                                <Label Grid.Column="3" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="Gray" Content="14:23"/>
+
+                                <Grid Grid.Column="3">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition></RowDefinition>
+                                        <RowDefinition></RowDefinition>
+                                    </Grid.RowDefinitions>
+                                    
+                                    <Label x:Name="lblLatestMessageTime" Grid.Row="0" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Foreground="Gray" Content="14:23"/>
+                                    <Border x:Name="brdrNewMessageBubble" Grid.Row="1"
+                                            Background="Red" Margin="11,0" Padding="1"
+                                            BorderBrush="Red" BorderThickness="1" CornerRadius="10">
+                                        <TextBlock x:Name="tbNewMessageCount" Text="0" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+                                    </Border>
+                                </Grid>
                             </Grid>
 
                         </Grid>
@@ -230,9 +233,9 @@
                             <ColumnDefinition Width="Auto"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
 
-                        <Label Grid.Column="0" 
+                        <Label x:Name="lblWinTitle" Grid.Column="0" 
                                HorizontalContentAlignment="Center" VerticalContentAlignment="Center" 
-                               MouseLeftButtonDown="Window_Title_MouseLeftButtonDown">lobby</Label>
+                               MouseLeftButtonDown="Window_Title_MouseLeftButtonDown">Astchat</Label>
 
                         <Grid x:Name="Window_Title" Grid.Column="1">
                             <Grid.ColumnDefinitions>
@@ -318,15 +321,15 @@
                             </Button>
                         </Grid>
                     </Grid>
-                    <Grid Grid.Row="1">
-                        <ScrollViewer>
+                    <Grid x:Name="gMessageRecord" Grid.Row="1">
+                        <ScrollViewer x:Name="svMessageRecord" Visibility="Collapsed">
                             <TextBlock x:Name="tbRecord" Padding="15,0" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto"></TextBlock>
                         </ScrollViewer>
                     </Grid>
 
                     <GridSplitter Grid.Row="2" Height="2" HorizontalAlignment="Center" VerticalAlignment="Top"></GridSplitter>
 
-                    <Grid Grid.Row="2">
+                    <Grid x:Name="gMessage" Grid.Row="2">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"></RowDefinition>
                             <RowDefinition></RowDefinition>
@@ -385,7 +388,7 @@
                         </StackPanel>
 
 
-                        <ScrollViewer Grid.Row="1">
+                        <ScrollViewer x:Name="svMessage" Grid.Row="1" Visibility="Collapsed">
                             <TextBox x:Name="txtMessage" Padding="15,0" TextWrapping="Wrap" ScrollViewer.VerticalScrollBarVisibility="Auto" AcceptsTab="True"></TextBox>
                         </ScrollViewer>
 
