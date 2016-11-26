@@ -130,8 +130,6 @@ namespace Astchat.Client.Launcher.WPF
 
 						if (matches.Count != 0)
 						{
-							string emoji_directory = @"https://cdn.jsdelivr.net/emojione/assets/png/";
-
 							int index = 0;
 							foreach (Match match in matches)
 							{
@@ -139,11 +137,12 @@ namespace Astchat.Client.Launcher.WPF
 									this.controlSetDic[channel].tbMessageRecord.Inlines.Add(new Run(message.Substring(index, match.Index - index)));
 
 								#region 加载emoji
-								var lbl = new Label() { Width = 25, Height = 25 };
-								string uri = emoji_directory + EmojiGallery.EmojiDic[match.Groups["EmojiShortName"].Value].unicode + ".png";
+									#error 在这里设置表情框的大小。
+								Image img = new Image() { Width = 45, Height = 45, Stretch = Stretch.Fill };
+								string uri = EmojiGallery.GetEmojiUri(EmojiGallery.EmojiDic[match.Groups["EmojiShortName"].Value].unicode);
 								if (true)
-									lbl.Background = new ImageBrush(new BitmapImage(new Uri(uri)));
-								this.controlSetDic[channel].tbMessageRecord.Inlines.Add(new InlineUIContainer(lbl));
+									img.Source = new BitmapImage(new Uri(uri));
+								this.controlSetDic[channel].tbMessageRecord.Inlines.Add(new InlineUIContainer(img));
 								#endregion
 
 								index = match.Index + match.Length;

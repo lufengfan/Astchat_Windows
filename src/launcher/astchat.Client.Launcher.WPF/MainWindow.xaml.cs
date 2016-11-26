@@ -60,8 +60,6 @@ namespace Astchat.Client.Launcher.WPF
 		{
 			if (isGridEmojiGalleryLoaded) return;
 			
-			string emoji_directory = @"https://cdn.jsdelivr.net/emojione/assets/png/";
-
 			var gs = from ei in EmojiGallery.EmojiDic.Values
 					 group ei by ei.category
 			into g
@@ -81,14 +79,13 @@ namespace Astchat.Client.Launcher.WPF
 				gridEmojiCategory.ColumnDefinitions.Add(new ColumnDefinition());
 				gridEmojiCategory.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Auto);
 
-				Label lblCategory = new Label();
-				lblCategory.SetValue(Grid.ColumnProperty, index);
-				lblCategory.Height = lblCategory.Width = 25;
-				string uri = emoji_directory + g.Emojis.First().unicode + ".png";
+				Image imgCategory = new Image();
+				imgCategory.SetValue(Grid.ColumnProperty, index);
+				imgCategory.Height = imgCategory.Width = 25;
 				if (true)
-					lblCategory.Background = new ImageBrush(new BitmapImage(new Uri(uri)));
-				lblCategory.ToolTip = new ToolTip() { Content = g.Category };
-				lblCategory.MouseEnter += (_sender, _e) =>
+					imgCategory.Source = new BitmapImage(new Uri(EmojiGallery.GetEmojiUri(g.Emojis.First().unicode)));
+				imgCategory.ToolTip = new ToolTip() { Content = g.Category };
+				imgCategory.MouseEnter += (_sender, _e) =>
 				 {
 					 if (!sv_list.Any(_sv => _sv.Name == "svEmoji_" + g.Category))
 					 {
@@ -104,15 +101,15 @@ namespace Astchat.Client.Launcher.WPF
 						 int _index = 0;
 						 foreach (var ei in g.Emojis)
 						 {
-							 Label lblEmoji = new Label();
-							 lblEmoji.SetValue(Grid.RowProperty, (_index - _index % column) / column);
-							 lblEmoji.SetValue(Grid.ColumnProperty, _index % column);
-							 lblEmoji.Height = lblEmoji.Width = 25;
-							 string _uri = emoji_directory + ei.unicode + ".png";
+							 Image imgEmoji = new Image();
+							 imgEmoji.SetValue(Grid.RowProperty, (_index - _index % column) / column);
+							 imgEmoji.SetValue(Grid.ColumnProperty, _index % column);
+							 imgEmoji.Stretch = Stretch.Fill;
+							 imgEmoji.Height = imgEmoji.Width = 25;
 							 if (true)
-								 lblEmoji.Background = new ImageBrush(new BitmapImage(new Uri(_uri)));
-							 lblEmoji.ToolTip = new ToolTip() { Content = ei.name };
-							 lblEmoji.MouseLeftButtonUp += (__sender, __e) =>
+								 imgEmoji.Source = new BitmapImage(new Uri(EmojiGallery.GetEmojiUri(ei.unicode)));
+							 imgEmoji.ToolTip = new ToolTip() { Content = ei.name };
+							 imgEmoji.MouseLeftButtonUp += (__sender, __e) =>
 							 {
 								 string insertStr = ei.shortname;
 								 this.controlSetDic[currentChannel].txtMessage.SelectedText = insertStr;
@@ -120,7 +117,7 @@ namespace Astchat.Client.Launcher.WPF
 								 this.controlSetDic[currentChannel].txtMessage.SelectionStart += insertStr.Length;
 							 };
 
-							 gridEmoji.Children.Add(lblEmoji);
+							 gridEmoji.Children.Add(imgEmoji);
 							 _index++;
 						 }
 
@@ -148,8 +145,10 @@ namespace Astchat.Client.Launcher.WPF
 						 }
 				 };
 				
-				gridEmojiCategory.Children.Add(lblCategory);
+				gridEmojiCategory.Children.Add(imgCategory);
 				index++;
+
+				GC.Collect();
 			}
 
 			ScrollViewer sv = new ScrollViewer();
@@ -165,7 +164,13 @@ namespace Astchat.Client.Launcher.WPF
 			if (this.popupEmojiGallery.IsOpen == true) return;
 
 			this.popupEmojiGallery.IsOpen = true;
-			this.gridEmojiGallery_Loaded(this.gridEmojiGallery, new RoutedEventArgs());
+			//try {
+				this.gridEmojiGallery_Loaded(this.gridEmojiGallery, new RoutedEventArgs());
+			//}
+			//catch (OutOfMemoryException _e)
+			//{
+			//	MessageBox.Show(_e.Message);
+			//}
 		}
 
 		private void gridImageUrl_Loaded(object sender, RoutedEventArgs e)
