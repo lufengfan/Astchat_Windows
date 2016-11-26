@@ -55,5 +55,25 @@ namespace Astchat.Client
 			}
 		}
 
+		/// <summary>
+		/// 获取Emoji图片的URI。
+		/// </summary>
+		/// <param name="unicode">Emoji的unicode。</param>
+		/// <returns>
+		/// <para>Emoji图片的URI。</para>
+		/// <para>如果本地存在已加载的文件，则返回文件路径。</para>
+		/// <para>如果本地不存在已加载的文件，则返回代理服务器上的文件URL。</para>
+		/// </returns>
+		public static string GetEmojiUri(string unicode)
+		{
+			const string emoji_directory = @"emojis";
+			const string emoji_host = @"https://cdn.jsdelivr.net/emojione/assets/png/";
+
+			string uri = Path.Combine(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, emoji_directory), unicode + ".png");
+			if (File.Exists(uri))
+				return uri;
+			else
+				return emoji_host + unicode + ".png";
+		}
 	}
 }

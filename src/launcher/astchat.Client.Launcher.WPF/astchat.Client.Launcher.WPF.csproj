@@ -64,6 +64,8 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="MainWindow.logic.cs" />
+    <Compile Include="MainWindow.ui.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -102,6 +104,21 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="SamLu.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\channel_default_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\add_channel\add_channel.png" />
+    <Resource Include="images\add_channel\add_channel_gray.png" />
+    <Resource Include="images\add_channel\add_channel_unabled.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\add_channel\add_channel_darkblue.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\add_emoji.png" />
+    <Resource Include="images\add_image.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
