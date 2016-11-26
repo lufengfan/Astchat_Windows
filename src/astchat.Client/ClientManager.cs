@@ -152,14 +152,15 @@ namespace Astchat.Client
 		/// <returns>图片是否获取成功。</returns>
 		public bool TryParseImage(string json, out string imageUrl)
 		{
-			const string SERVER_IMAGE_HTML_REGEX = "<img class\\=\"ui msg rounded image\" src\\=\"(?<imageUrl>.*)\">"; // 匹配Astchat服务器包装图片URL的HTML元素的正则表达式。
+			const string SERVER_IMAGE_HTML_REGEX = "<img class\\=\"ui msg rounded image\" src\\=\"(?<ImageUrl>.*)\">"; // 匹配Astchat服务器包装图片URL的HTML元素的正则表达式。
+			const string SERVER_IMAGE_HTML_REGEX_GROUP_PATTERN = "ImageUrl"; // 匹配Astchat服务器包装图片URL的HTML元素的正则表达式组名称。
 			string message = ParsePureText(json);
 			Match m = Regex.Match(message, SERVER_IMAGE_HTML_REGEX);
 
 			imageUrl = null;
 			if (!m.Success) return false;
 
-			imageUrl = m.Groups["imageUrl"].Value;
+			imageUrl = m.Groups[SERVER_IMAGE_HTML_REGEX_GROUP_PATTERN].Value;
 			
 			return true;
         }
@@ -183,7 +184,7 @@ namespace Astchat.Client
 		public static long FormatDateTime(DateTime time)
 		{
 			TimeSpan span = time - TimeZone.CurrentTimeZone.ToLocalTime(new DateTime(1970, 1, 1));
-			return (long)span.TotalMilliseconds; ;
+			return (long)span.TotalMilliseconds;
 		}
 
 		/// <summary>

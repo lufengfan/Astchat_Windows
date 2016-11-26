@@ -164,7 +164,7 @@ namespace Astchat.Client.Launcher.WPF
 				  if (_e.Key == Key.Enter)
 				  {
 					  if (this.txtImageUrl.Text != string.Empty)
-						  manager.SendImage("lobby", this.txtImageUrl.Text);
+						  manager.SendImage(currentChannel, this.txtImageUrl.Text);
 					  this.txtImageUrl.Clear();
 					  this.popupSendImage.IsOpen = false;
 				  }

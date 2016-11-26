@@ -104,7 +104,7 @@ namespace Astchat.Client.Launcher.WPF
 		/// <param name="e">事件的参数</param>
 		private void Window_Title_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			if (this.WindowState != WindowState.Normal) return;
+			if (this.WindowState == WindowState.Minimized) return;
 
 			this.DragMove();
 		}
@@ -181,7 +181,7 @@ namespace Astchat.Client.Launcher.WPF
 				// 根据当前窗口状态更换按钮显示图标
 				this.Window_Title_Button_Maximize.Content = this.Window_Title.Resources[(this.WindowState == WindowState.Normal) ? "Window_Title_Button_Maximize_MaximizeContent" : "Window_Title_Button_Maximize_NormalizeContent"];
 
-				this.SetWindowBorderRectanglesVisibility((this.WindowState == WindowState.Maximized) ? Visibility.Collapsed : Visibility.Visible);
+				// this.SetWindowBorderRectanglesVisibility((this.WindowState == WindowState.Maximized) ? Visibility.Collapsed : Visibility.Visible);
 			}
 		}
 		#endregion
