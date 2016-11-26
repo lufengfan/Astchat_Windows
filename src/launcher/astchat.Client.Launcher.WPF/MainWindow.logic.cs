@@ -40,9 +40,11 @@ namespace Astchat.Client.Launcher.WPF
 		private static readonly ClientManager manager = new ClientManager();
 		private void connect(string channel)
 		{
-			if (this.controlSetDic.ContainsKey(channel.Trim())) return;
+			channel = channel.Trim().ToLower();
+			if (string.IsNullOrEmpty(channel) || this.controlSetDic.ContainsKey(channel)) return;
 			
 			this.addChannelControls(channel);
+			this.svChannelList.ScrollToEnd(); // 添加新频道自动滚动到底部。
 			
 			WebSocket ws = manager.AddChannel(channel);
 			ws.OnOpen += (sender, e) =>
@@ -64,19 +66,32 @@ namespace Astchat.Client.Launcher.WPF
 			};
 			ws.OnMessage += (sender, e) =>
 			{
-				string record, time, message;
+				string time_short, time_long, message;
 
 				DateTime dt = ClientManager.FormatUTC(manager.ParseTime(e.Data));
-				if ((DateTime.Now - dt).TotalDays <= 7)
+				if ((DateTime.Now - dt).TotalDays < 7)
 				{
-					if (dt.DayOfWeek == DateTime.Now.DayOfWeek)
-						time = dt.ToString("hh:mm:ss");
-					else
-						time = dt.DayOfWeek.ToString("D");
+					switch (DateTime.Now.Day - dt.Day)
+					{
+						case 0:
+							time_short = dt.ToString("HH:mm");
+							time_long = dt.ToString("HH:mm:ss");
+							break;
+						case 1:
+							time_short = "昨天";
+							time_long = time_short + dt.ToString(" HH:mm:ss");
+							break;
+						default:
+							time_short = dt.DayOfWeek.ToString("D");
+							time_long = time_short + dt.ToString(" HH:mm:ss");
+							break;
+					}
 				}
 				else
-					time = dt.ToString("yyyy-MM-dd hh:mm");
-
+				{
+					time_short = dt.ToString("yyyy-MM-dd");
+					time_long = time_short + dt.ToString(" HH:mm:ss");
+				}
 
 
 				#region 处理message
@@ -84,7 +99,7 @@ namespace Astchat.Client.Launcher.WPF
 				{
 					this.controlSetDic[channel].tbMessageRecord.Inlines.AddRange(new Inline[]
 					{
-						new Run(time) { Foreground = new SolidColorBrush(Colors.Gray), FontStyle = FontStyles.Italic },
+						new Run(time_long) { Foreground = new SolidColorBrush(Colors.Gray), FontStyle = FontStyles.Italic },
 						new Run(Environment.NewLine)
 					}
 					);
@@ -145,7 +160,7 @@ namespace Astchat.Client.Launcher.WPF
 
 
 
-				record = string.Format("{0}{2}{1}{2}{2}", time, message, Environment.NewLine);
+				//record = string.Format("{0}{2}{1}{2}{2}", time_long, message, Environment.NewLine);
 
 
 
@@ -161,9 +176,13 @@ namespace Astchat.Client.Launcher.WPF
 				#endregion
 
 				this.Dispatcher.BeginInvoke(new Action(() =>
+					this.controlSetDic[channel].svMessageRecord.ScrollToEnd() // 显示出新信息自动滚动到底部。
+				));
+
+				this.Dispatcher.BeginInvoke(new Action(() =>
 				{
 					this.controlSetDic[channel].tbLatestMessageContent.Text = message;
-					this.controlSetDic[channel].lblLatestMessageTime.Content = time;
+					this.controlSetDic[channel].lblLatestMessageTime.Content = time_short;
 					
 					lock (this.currentChannel)
 					{
@@ -217,6 +236,16 @@ namespace Astchat.Client.Launcher.WPF
 			};
 
 			this.setCurrentChannel(channel);
+		}
+
+		private void disconnect(string channel)
+		{
+			channel = channel.Trim().ToLower();
+
+			if (!this.controlSetDic.ContainsKey(channel)) return;
+
+			manager.RemoveChannel(channel);
+			this.removeChannelControls(channel);
 		}
 
 		private void setCurrentChannel(string channel)

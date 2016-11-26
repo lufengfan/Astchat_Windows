@@ -55,9 +55,11 @@ namespace Astchat.Client.Launcher.WPF
 			#endregion
 		}
 
-
+		private bool isGridEmojiGalleryLoaded = false;
 		private void gridEmojiGallery_Loaded(object sender, RoutedEventArgs e)
 		{
+			if (isGridEmojiGalleryLoaded) return;
+			
 			string emoji_directory = @"https://cdn.jsdelivr.net/emojione/assets/png/";
 
 			var gs = from ei in EmojiGallery.EmojiDic.Values
@@ -77,6 +79,7 @@ namespace Astchat.Client.Launcher.WPF
 			{
 				string category = g.Category;
 				gridEmojiCategory.ColumnDefinitions.Add(new ColumnDefinition());
+				gridEmojiCategory.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Auto);
 
 				Label lblCategory = new Label();
 				lblCategory.SetValue(Grid.ColumnProperty, index);
@@ -87,74 +90,82 @@ namespace Astchat.Client.Launcher.WPF
 				lblCategory.ToolTip = new ToolTip() { Content = g.Category };
 				lblCategory.MouseEnter += (_sender, _e) =>
 				 {
-					 foreach (var item in sv_list)
+					 if (!sv_list.Any(_sv => _sv.Name == "svEmoji_" + g.Category))
 					 {
-						 if (item.Name == "svEmoji_" + g.Category)
+
+						 Grid gridEmoji = new Grid();
+
+						 int row, column;
+						 column = (int)this.popupEmojiGallery.Width / 25;
+						 row = g.Emojis.Count() / column + 1;
+						 for (int i = 0; i < row; i++) gridEmoji.RowDefinitions.Add(new RowDefinition());
+						 for (int i = 0; i < column; i++) gridEmoji.ColumnDefinitions.Add(new ColumnDefinition());
+
+						 int _index = 0;
+						 foreach (var ei in g.Emojis)
 						 {
-							 item.Visibility = Visibility.Visible;
+							 Label lblEmoji = new Label();
+							 lblEmoji.SetValue(Grid.RowProperty, (_index - _index % column) / column);
+							 lblEmoji.SetValue(Grid.ColumnProperty, _index % column);
+							 lblEmoji.Height = lblEmoji.Width = 25;
+							 string _uri = emoji_directory + ei.unicode + ".png";
+							 if (true)
+								 lblEmoji.Background = new ImageBrush(new BitmapImage(new Uri(_uri)));
+							 lblEmoji.ToolTip = new ToolTip() { Content = ei.name };
+							 lblEmoji.MouseLeftButtonUp += (__sender, __e) =>
+							 {
+								 string insertStr = ei.shortname;
+								 this.controlSetDic[currentChannel].txtMessage.SelectedText = insertStr;
+								 this.controlSetDic[currentChannel].txtMessage.SelectionLength = 0;
+								 this.controlSetDic[currentChannel].txtMessage.SelectionStart += insertStr.Length;
+							 };
+
+							 gridEmoji.Children.Add(lblEmoji);
+							 _index++;
 						 }
-						 else
-						 {
-							 item.Visibility = Visibility.Collapsed;
-						 }
+
+						 ScrollViewer _sv = new ScrollViewer();
+						 _sv.SetValue(Grid.RowProperty, 0);
+						 _sv.Name = "svEmoji_" + g.Category;
+						 _sv.Content = gridEmoji;
+						 _sv.Visibility = Visibility.Collapsed;
+						 gridEmoji.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Auto);
+						 sv_list.Add(_sv);
+
+						 this.gridEmojiGallery.Children.Add(_sv);
 					 }
+
+						 foreach (var item in sv_list)
+						 {
+							 if (item.Name == "svEmoji_" + g.Category)
+							 {
+								 item.Visibility = Visibility.Visible;
+							 }
+							 else
+							 {
+								 item.Visibility = Visibility.Collapsed;
+							 }
+						 }
 				 };
-
-				Grid gridEmoji = new Grid();
-
-				int row, column;
-				column = (int)this.popupEmojiGallery.Width / 25;
-				row = g.Emojis.Count() / column + 1;
-				for (int i = 0; i < row; i++) gridEmoji.RowDefinitions.Add(new RowDefinition());
-				for (int i = 0; i < column; i++) gridEmoji.ColumnDefinitions.Add(new ColumnDefinition());
-
-				int _index = 0;
-				foreach (var ei in g.Emojis)
-				{
-					Label lblEmoji = new Label();
-					lblEmoji.SetValue(Grid.RowProperty, (_index - _index % column) / column);
-					lblEmoji.SetValue(Grid.ColumnProperty, _index % column);
-					lblEmoji.Height = lblEmoji.Width = 25;
-					string _uri = emoji_directory + ei.unicode + ".png";
-					if (true)
-						lblEmoji.Background = new ImageBrush(new BitmapImage(new Uri(_uri)));
-					lblEmoji.ToolTip = new ToolTip() { Content = ei.name };
-					lblEmoji.MouseLeftButtonUp += (_sender, _e) =>
-					{
-						string insertStr = ei.shortname;
-						this.txtMessage.SelectedText = insertStr;
-						this.txtMessage.SelectionLength = 0;
-						this.txtMessage.SelectionStart += insertStr.Length;
-					};
-
-					gridEmoji.Children.Add(lblEmoji);
-					_index++;
-				}
-
-				ScrollViewer _sv = new ScrollViewer();
-				_sv.SetValue(Grid.RowProperty, 0);
-				_sv.Name = "svEmoji_" + g.Category;
-				_sv.Content = gridEmoji;
-				_sv.Visibility = Visibility.Collapsed;
-				gridEmoji.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Auto);
-				sv_list.Add(_sv);
-
+				
 				gridEmojiCategory.Children.Add(lblCategory);
-				this.gridEmojiGallery.Children.Add(_sv);
 				index++;
 			}
 
 			ScrollViewer sv = new ScrollViewer();
 			sv.SetValue(Grid.RowProperty, 1);
 			sv.Content = gridEmojiCategory;
-			gridEmojiCategory.SetValue(ScrollViewer.HorizontalScrollBarVisibilityProperty, ScrollBarVisibility.Visible);
-			gridEmojiCategory.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Disabled);
 			this.gridEmojiGallery.Children.Add(sv);
+
+			this.isGridEmojiGalleryLoaded = true;
 		}
 
 		private void lblInsertEmoji_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
 		{
+			if (this.popupEmojiGallery.IsOpen == true) return;
+
 			this.popupEmojiGallery.IsOpen = true;
+			this.gridEmojiGallery_Loaded(this.gridEmojiGallery, new RoutedEventArgs());
 		}
 
 		private void gridImageUrl_Loaded(object sender, RoutedEventArgs e)
@@ -186,6 +197,24 @@ namespace Astchat.Client.Launcher.WPF
 		{
 			if (e.Key == Key.Enter)
 				btnAddChannel_Click(sender, new RoutedEventArgs());
+		}
+
+		private void txtChannel_TextChanged(object sender, TextChangedEventArgs e)
+		{
+			if (string.IsNullOrEmpty(this.txtChannel.Text))
+			{
+				this.btnAddChannel.Content = this.btnAddChannel.Resources["lblAddChannel_Unabled"];
+			}
+			else
+			{
+				this.btnAddChannel.Content = this.btnAddChannel.Resources["lblAddChannel_Gray"];
+			}
+		}
+
+		private void btnAddChannel_Loaded(object sender, RoutedEventArgs e)
+		{
+			Button btn = (Button)sender;
+			btn.Content = btn.Resources["lblAddChannel_Unabled"];
 		}
 	}
 }

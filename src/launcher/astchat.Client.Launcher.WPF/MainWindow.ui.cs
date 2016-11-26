@@ -94,6 +94,57 @@ namespace Astchat.Client.Launcher.WPF
 				this.Close();
 		}
 
+		private void Window_Title_DoubleClick(object sender, MouseButtonEventArgs e)
+		{
+			if (this.WindowState == WindowState.Minimized) return;
+			
+			this.WindowState = (this.WindowState == WindowState.Normal) ? WindowState.Maximized : WindowState.Normal;
+		}
+
+		private void Window_Title_Move(object sender, MouseEventArgs e)
+		{
+			if (e.LeftButton == MouseButtonState.Pressed)
+			{
+				if (this.WindowState == WindowState.Maximized)
+				{
+					FrameworkElement element = sender as FrameworkElement;
+					Point p_pre = e.GetPosition(element);
+					double pre_left = this.Left;
+					double pre_top = this.Top;
+					double pre_width = element.ActualWidth;
+					double pre_height = element.ActualHeight;
+
+					this.WindowState = WindowState.Normal;
+					double window_border_thickness = (double)this.Resources["Window_Border_Thickness"];
+
+					double cur_left;
+					double cur_top;
+					double cur_width = element.ActualWidth - 2 * window_border_thickness;
+					double cur_height = element.ActualHeight - 2 * window_border_thickness;
+
+					// 计算窗口左上角横坐标。
+					if (p_pre.X < Math.Min(cur_width, pre_width / 3))
+						cur_left = pre_left;
+					else if (p_pre.X > Math.Max(pre_width - cur_width, pre_width / 3 * 2))
+						cur_left = pre_left + pre_width - cur_width;
+					else
+						cur_left = pre_left + (p_pre.X - Math.Min(cur_width, pre_width / 3)) * ((pre_width - cur_width) / cur_width);
+
+					// 计算窗口左上角纵坐标。
+					if (p_pre.Y < Math.Min(cur_height, pre_height / 3))
+						cur_top = pre_top;
+					else if (p_pre.Y > Math.Max(pre_height - cur_height, pre_height / 3 * 2))
+						cur_top = pre_top + pre_height - cur_height;
+					else
+						cur_top = pre_top + (p_pre.Y - Math.Min(cur_height, pre_height / 3)) * ((pre_height - cur_height) / cur_height);
+
+					this.Left = cur_left;
+					this.Top = cur_top;
+				}
+
+				Window_Title_MouseLeftButtonDown(sender, null);
+			}
+        }
 
 
 		#region 移动窗口
@@ -106,7 +157,8 @@ namespace Astchat.Client.Launcher.WPF
 		{
 			if (this.WindowState == WindowState.Minimized) return;
 
-			this.DragMove();
+			if (this.WindowState == WindowState.Normal)
+				this.DragMove();
 		}
 		#endregion
 
@@ -340,9 +392,20 @@ namespace Astchat.Client.Launcher.WPF
 			set.txtMessage.SetValue(ScrollViewer.VerticalScrollBarVisibilityProperty, ScrollBarVisibility.Auto);
 			set.txtMessage.AcceptsTab = true;
 			set.txtMessage.Padding = new Thickness(15, 0, 15, 0);
-			set.tbMessageRecord.TextWrapping = TextWrapping.Wrap;
+			set.txtMessage.TextWrapping = TextWrapping.Wrap;
 			#endregion
 			#endregion
+		}
+
+		private void removeChannelControls(string channel)
+		{
+			BindingControlSet set = this.controlSetDic[channel];
+
+			this.spChannelList.Children.Remove(set.gChannel);
+			this.gMessageRecord.Children.Remove(set.svMessageRecord);
+			this.gMessage.Children.Remove(set.svMessage);
+
+			this.controlSetDic.Remove(channel);
 		}
 
 		class BindingControlSet
