@@ -101,6 +101,10 @@
       <Project>{d376ac74-f77d-4360-a49c-38dc4a653af6}</Project>
       <Name>Astchat.Client</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\bugreport\BugReport\BugReport.csproj">
+      <Project>{2201035b-70dd-448c-bfb9-376b250dc27b}</Project>
+      <Name>BugReport</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="SamLu.ico" />

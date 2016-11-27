@@ -4,12 +4,25 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astchat.Client", "Astchat.Client\Astchat.Client.csproj", "{D376AC74-F77D-4360-A49C-38DC4A653AF6}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2201035B-70DD-448C-BFB9-376B250DC27B} = {2201035B-70DD-448C-BFB9-376B250DC27B}
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "launcher", "launcher", "{11998D8A-D097-4CA3-A4C5-8D92854A6DC0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astchat.Client.Launcher.WinForm", "launcher\Astchat.Client.Launcher.WinForm\Astchat.Client.Launcher.WinForm.csproj", "{70FF35EE-DEC4-4F28-8B60-0E72783888E5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2201035B-70DD-448C-BFB9-376B250DC27B} = {2201035B-70DD-448C-BFB9-376B250DC27B}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Astchat.Client.Launcher.WPF", "launcher\Astchat.Client.Launcher.WPF\Astchat.Client.Launcher.WPF.csproj", "{53BC8D91-2B34-4903-9330-FD21D9F6567D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{2201035B-70DD-448C-BFB9-376B250DC27B} = {2201035B-70DD-448C-BFB9-376B250DC27B}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "bugreport", "bugreport", "{0821F5F3-7EB4-40B5-9DBC-2F16F453C524}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BugReport", "bugreport\BugReport\BugReport.csproj", "{2201035B-70DD-448C-BFB9-376B250DC27B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +42,10 @@ Global
 		{53BC8D91-2B34-4903-9330-FD21D9F6567D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53BC8D91-2B34-4903-9330-FD21D9F6567D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53BC8D91-2B34-4903-9330-FD21D9F6567D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2201035B-70DD-448C-BFB9-376B250DC27B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2201035B-70DD-448C-BFB9-376B250DC27B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2201035B-70DD-448C-BFB9-376B250DC27B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2201035B-70DD-448C-BFB9-376B250DC27B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -36,5 +53,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{70FF35EE-DEC4-4F28-8B60-0E72783888E5} = {11998D8A-D097-4CA3-A4C5-8D92854A6DC0}
 		{53BC8D91-2B34-4903-9330-FD21D9F6567D} = {11998D8A-D097-4CA3-A4C5-8D92854A6DC0}
+		{2201035B-70DD-448C-BFB9-376B250DC27B} = {0821F5F3-7EB4-40B5-9DBC-2F16F453C524}
 	EndGlobalSection
 EndGlobal
