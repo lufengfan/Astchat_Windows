@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // 有关程序集的一般信息由以下
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
-[assembly: AssemblyTitle("Astchat.Client.Launcher.WinForm")]
-[assembly: AssemblyDescription("一个构架与Windows Form上的Astchat Windows启动器。")]
+[assembly: AssemblyTitle("BugReport")]
+[assembly: AssemblyDescription("Astchat Windows错误报告组件。")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Sam Lu")]
-[assembly: AssemblyProduct("Astchat Windows")]
+[assembly: AssemblyProduct("BugReport for Astchat Windows")]
 [assembly: AssemblyCopyright("Copyright © Sam Lu 2016, all rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // 如果此项目向 COM 公开，则下列 GUID 用于类型库的 ID
-[assembly: Guid("25fc2d11-3610-49a1-ab27-5ae0c8d4cc42")]
+[assembly: Guid("2201035b-70dd-448c-bfb9-376b250dc27b")]
 
 // 程序集的版本信息由下列四个值组成: 
 //
@@ -29,5 +29,8 @@ using System.Runtime.InteropServices;
 //      生成号
 //      修订号
 //
-[assembly: AssemblyVersion("0.0.0.0")]
-[assembly: AssemblyFileVersion("0.0.0.0")]
+//可以指定所有这些值，也可以使用“生成号”和“修订号”的默认值，
+// 方法是按如下所示使用“*”: :
+// [assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("Astchat.Client.Launcher.WPF")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("一个构架于WPF上的Astchat Windows启动器。")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Sam Lu")]
 [assembly: AssemblyProduct("Astchat Windows")]
-[assembly: AssemblyCopyright("Copyright © Sam Lu 2016")]
+[assembly: AssemblyCopyright("Copyright © Sam Lu 2016, all rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      生成号
 //      修订号
 //
-[assembly: AssemblyVersion("0.2.*")]
-[assembly: AssemblyFileVersion("0.2.1.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]

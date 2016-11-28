@@ -9,6 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
@@ -220,6 +221,32 @@ namespace Astchat.Client.Launcher.WPF
 		{
 			Button btn = (Button)sender;
 			btn.Content = btn.Resources["lblAddChannel_Unabled"];
+		}
+
+
+
+
+
+		/// <summary>
+		/// 将txtMessage中的信息发送至服务器。
+		/// </summary>
+		/// <param name="channel">指定的频道。</param>
+		private void sendInternal(string channel)
+		{
+			if (this.controlSetDic[channel].txtMessage.Text.Length == 0)
+			{
+				Console.Beep();
+				this.popupMessageEmpty.IsOpen = true;
+				return;
+			}
+			
+			manager.SendPureText(channel, this.controlSetDic[channel].txtMessage.Text);
+			this.Dispatcher.Invoke(new Action(() => this.controlSetDic[channel].txtMessage.Clear()));
+		}
+
+		private void btnSend_Click(object sender, RoutedEventArgs e)
+		{
+			this.sendInternal(this.currentChannel);
 		}
 	}
 }
