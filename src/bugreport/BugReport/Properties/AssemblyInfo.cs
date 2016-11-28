@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // 控制。更改这些特性值可修改
 // 与程序集关联的信息。
 [assembly: AssemblyTitle("BugReport")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Astchat Windows错误报告组件。")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("BugReport")]
-[assembly: AssemblyCopyright("Copyright ©  2016")]
+[assembly: AssemblyCompany("Sam Lu")]
+[assembly: AssemblyProduct("BugReport for Astchat Windows")]
+[assembly: AssemblyCopyright("Copyright © Sam Lu 2016, all rights reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
