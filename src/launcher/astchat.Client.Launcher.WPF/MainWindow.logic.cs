@@ -203,14 +203,7 @@ namespace Astchat.Client.Launcher.WPF
 				}));
 			};
 			ws.Connect();
-
-			RoutedEventHandler send = (sender, e) =>
-			{
-				manager.SendPureText(channel, this.controlSetDic[channel].txtMessage.Text);
-				this.Dispatcher.Invoke(new Action(() => this.controlSetDic[channel].txtMessage.Clear()));
-			};
-
-			this.btnSend.Click += send;
+			
 			this.controlSetDic[channel].txtMessage.KeyDown += (sender, e) =>
 			{
 				if (e.Key == Key.Enter)
@@ -225,9 +218,16 @@ namespace Astchat.Client.Launcher.WPF
 							txtMessage.SelectionStart += newline.Length;
 						}));
 					else
-						send(sender, null);
+					{
+						this.sendInternal(channel);
+					}
 				}
 			};
+			this.controlSetDic[channel].txtMessage.TextChanged += (sender, e) =>
+			  {
+				  if (this.popupMessageEmpty.IsOpen)
+					  this.popupMessageEmpty.IsOpen = false;
+			  };
 
 			this.Closing += (sender, e) =>
 			{
@@ -242,9 +242,11 @@ namespace Astchat.Client.Launcher.WPF
 			channel = channel.Trim().ToLower();
 
 			if (!this.controlSetDic.ContainsKey(channel)) return;
-
+			
 			manager.RemoveChannel(channel);
 			this.removeChannelControls(channel);
+
+			this.setCurrentChannel(null);
 		}
 
 		private void setCurrentChannel(string channel)

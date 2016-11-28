@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
 namespace Astchat.Client.Launcher.WPF
@@ -22,6 +23,19 @@ namespace Astchat.Client.Launcher.WPF
 		{
 			this.CurrentChannelChanged += (sender, e) =>
 			{
+				if (e.Channel == null)
+				{
+					this.lblWinTitle.Content = "Astchat";
+					this.gMessageRecord.IsEnabled = false;
+					this.gMessage.IsEnabled = false;
+					return;
+				}
+				else
+				{
+					this.gMessageRecord.IsEnabled = true;
+					this.gMessage.IsEnabled = true;
+				}
+				
 				foreach (var pair in this.controlSetDic)
 				{
 					var set = pair.Value;
@@ -266,14 +280,18 @@ namespace Astchat.Client.Launcher.WPF
 			set.gChannel = new Grid();
 			this.spChannelList.Children.Add(set.gChannel);
 			set.gChannel.Background = new SolidColorBrush(Color.FromArgb(16, 0, 0, 0));
-
+			set.gChannel.ColumnDefinitions.Add(new ColumnDefinition());
+			set.gChannel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0, GridUnitType.Auto) });
+			
 			#region grid1
 			Grid grid1 = new Grid();
 			set.gChannel.Children.Add(grid1);
+			grid1.SetValue(Grid.ColumnProperty, 0);
 			grid1.Margin = new Thickness(15);
 			grid1.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0, GridUnitType.Auto) });
 			grid1.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(10) });
 			grid1.ColumnDefinitions.Add(new ColumnDefinition());
+			grid1.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0, GridUnitType.Auto) });
 			grid1.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(0, GridUnitType.Auto) });
 
 			#region imgChannelIcon
@@ -352,9 +370,115 @@ namespace Astchat.Client.Launcher.WPF
 			#endregion
 			#endregion
 
+			#region lblRemoveChannel
+			Label lblRemoveChannel = new Label();
+			set.gChannel.Children.Add(lblRemoveChannel);
+			lblRemoveChannel.SetValue(Grid.ColumnProperty, 1);
+			lblRemoveChannel.Width = 5;
+			lblRemoveChannel.Content = "删除";
+			lblRemoveChannel.Foreground = new SolidColorBrush(Colors.Transparent);
+			lblRemoveChannel.Background = new SolidColorBrush(Colors.Transparent);
+			lblRemoveChannel.HorizontalAlignment = HorizontalAlignment.Stretch;
+			lblRemoveChannel.HorizontalContentAlignment = HorizontalAlignment.Center;
+			lblRemoveChannel.VerticalAlignment = VerticalAlignment.Stretch;
+			lblRemoveChannel.VerticalContentAlignment = VerticalAlignment.Center;
+			lblRemoveChannel.MouseLeftButtonUp += (sender, e) =>
+			  {
+				  this.disconnect(channel);
+			  };
+
+			#region trgMouseEnter
+			EventTrigger trgMouseEnter = new EventTrigger(Label.MouseEnterEvent);
+			lblRemoveChannel.Triggers.Add(trgMouseEnter);
+			BeginStoryboard actBeginStoryboard_MouseEnter = new BeginStoryboard();
+			trgMouseEnter.Actions.Add(actBeginStoryboard_MouseEnter);
+			Storyboard storyboard_MouseEnter = new Storyboard();
+			actBeginStoryboard_MouseEnter.Storyboard = storyboard_MouseEnter;
+
+			Duration duration_MouseEnter = new TimeSpan(0, 0, 0, 0, 250);
+
+			DoubleAnimation widthDoubleAnimation_MouseEnter = new DoubleAnimation();
+			storyboard_MouseEnter.Children.Add(widthDoubleAnimation_MouseEnter);
+			Storyboard.SetTarget(widthDoubleAnimation_MouseEnter, lblRemoveChannel);
+			Storyboard.SetTargetProperty(widthDoubleAnimation_MouseEnter, new PropertyPath(Label.WidthProperty));
+			widthDoubleAnimation_MouseEnter.From = 5;
+			widthDoubleAnimation_MouseEnter.To = 50;
+			widthDoubleAnimation_MouseEnter.Duration = duration_MouseEnter;
+
+			DoubleAnimation opacityDoubleAnimation_MouseEnter = new DoubleAnimation();
+			storyboard_MouseEnter.Children.Add(opacityDoubleAnimation_MouseEnter);
+			Storyboard.SetTarget(opacityDoubleAnimation_MouseEnter, lblRemoveChannel);
+			Storyboard.SetTargetProperty(opacityDoubleAnimation_MouseEnter, new PropertyPath(Label.OpacityProperty));
+			opacityDoubleAnimation_MouseEnter.From = 0;
+			opacityDoubleAnimation_MouseEnter.To = 1;
+			opacityDoubleAnimation_MouseEnter.Duration = duration_MouseEnter;
+
+			ColorAnimation foregroundColorAnimation_MouseEnter = new ColorAnimation();
+			storyboard_MouseEnter.Children.Add(foregroundColorAnimation_MouseEnter);
+			Storyboard.SetTarget(foregroundColorAnimation_MouseEnter, lblRemoveChannel);
+			Storyboard.SetTargetProperty(foregroundColorAnimation_MouseEnter, new PropertyPath("(0).(1)", Label.ForegroundProperty, SolidColorBrush.ColorProperty));
+			foregroundColorAnimation_MouseEnter.From = Colors.Transparent;
+			foregroundColorAnimation_MouseEnter.To = Colors.White;
+			foregroundColorAnimation_MouseEnter.Duration = duration_MouseEnter;
+
+			ColorAnimation backgroundColorAnimation_MouseEnter = new ColorAnimation();
+			storyboard_MouseEnter.Children.Add(backgroundColorAnimation_MouseEnter);
+			Storyboard.SetTarget(backgroundColorAnimation_MouseEnter, lblRemoveChannel);
+			Storyboard.SetTargetProperty(backgroundColorAnimation_MouseEnter, new PropertyPath("(0).(1)", Label.BackgroundProperty, SolidColorBrush.ColorProperty));
+			backgroundColorAnimation_MouseEnter.From = Colors.Transparent;
+			backgroundColorAnimation_MouseEnter.To = Colors.Red;
+			backgroundColorAnimation_MouseEnter.Duration = duration_MouseEnter;
+			#endregion
+
+			#region trgMouseLeave
+			EventTrigger trgMouseLeave = new EventTrigger(Label.MouseLeaveEvent);
+			lblRemoveChannel.Triggers.Add(trgMouseLeave);
+			BeginStoryboard actBeginStoryboard_MouseLeave = new BeginStoryboard();
+			trgMouseLeave.Actions.Add(actBeginStoryboard_MouseLeave);
+			Storyboard storyboard_MouseLeave = new Storyboard();
+			actBeginStoryboard_MouseLeave.Storyboard = storyboard_MouseLeave;
+
+			Duration duration_MouseLeave = new TimeSpan(0, 0, 0, 0, 250);
+
+			DoubleAnimation widthDoubleAnimation_MouseLeave = new DoubleAnimation();
+			storyboard_MouseLeave.Children.Add(widthDoubleAnimation_MouseLeave);
+			Storyboard.SetTarget(widthDoubleAnimation_MouseLeave, lblRemoveChannel);
+			Storyboard.SetTargetProperty(widthDoubleAnimation_MouseLeave, new PropertyPath(Label.WidthProperty));
+			widthDoubleAnimation_MouseLeave.From = 50;
+			widthDoubleAnimation_MouseLeave.To = 5;
+			widthDoubleAnimation_MouseLeave.Duration = duration_MouseLeave;
+
+			DoubleAnimation opacityDoubleAnimation_MouseLeave = new DoubleAnimation();
+			storyboard_MouseLeave.Children.Add(opacityDoubleAnimation_MouseLeave);
+			Storyboard.SetTarget(opacityDoubleAnimation_MouseLeave, lblRemoveChannel);
+			Storyboard.SetTargetProperty(opacityDoubleAnimation_MouseLeave, new PropertyPath(Label.OpacityProperty));
+			opacityDoubleAnimation_MouseLeave.From = 1;
+			opacityDoubleAnimation_MouseLeave.To = 0;
+			opacityDoubleAnimation_MouseLeave.Duration = duration_MouseLeave;
+
+			ColorAnimation foregroundColorAnimation_MouseLeave = new ColorAnimation();
+			storyboard_MouseLeave.Children.Add(foregroundColorAnimation_MouseLeave);
+			Storyboard.SetTarget(foregroundColorAnimation_MouseLeave, lblRemoveChannel);
+			Storyboard.SetTargetProperty(foregroundColorAnimation_MouseLeave, new PropertyPath("(0).(1)", Label.ForegroundProperty, SolidColorBrush.ColorProperty));
+			foregroundColorAnimation_MouseLeave.From = Colors.White;
+			foregroundColorAnimation_MouseLeave.To = Colors.Transparent;
+			foregroundColorAnimation_MouseLeave.Duration = duration_MouseLeave;
+
+			ColorAnimation backgroundColorAnimation_MouseLeave = new ColorAnimation();
+			storyboard_MouseLeave.Children.Add(backgroundColorAnimation_MouseLeave);
+			Storyboard.SetTarget(backgroundColorAnimation_MouseLeave, lblRemoveChannel);
+			Storyboard.SetTargetProperty(backgroundColorAnimation_MouseLeave, new PropertyPath("(0).(1)", Label.BackgroundProperty, SolidColorBrush.ColorProperty));
+			backgroundColorAnimation_MouseLeave.From = Colors.Red;
+			backgroundColorAnimation_MouseLeave.To = Colors.Transparent;
+			backgroundColorAnimation_MouseLeave.Duration = duration_MouseLeave;
+			#endregion
+
+			#endregion
+
 
 			Label lblHotArea = new Label();
 			set.gChannel.Children.Add(lblHotArea);
+			lblHotArea.SetValue(Grid.ColumnProperty, 0);
 			lblHotArea.MouseLeftButtonUp += (sender, e) =>
 			{
 				// 引发CurrentChannelChange事件。
@@ -405,10 +529,11 @@ namespace Astchat.Client.Launcher.WPF
 			this.gMessageRecord.Children.Remove(set.svMessageRecord);
 			this.gMessage.Children.Remove(set.svMessage);
 
+			set.Dispose();
 			this.controlSetDic.Remove(channel);
 		}
 
-		class BindingControlSet
+		class BindingControlSet : IDisposable
 		{
 			public Grid gChannel { get; set; }
 			public Image imgChannelIcon { get; set; }
@@ -421,6 +546,52 @@ namespace Astchat.Client.Launcher.WPF
 			public TextBlock tbMessageRecord { get; set; }
 			public ScrollViewer svMessage { get; set; }
 			public TextBox txtMessage { get; set; }
+
+			#region IDisposable Support
+			private bool disposedValue = false; // 要检测冗余调用
+
+			protected virtual void Dispose(bool disposing)
+			{
+				if (!disposedValue)
+				{
+					if (disposing)
+					{
+						// TODO: 释放托管状态(托管对象)。
+					}
+
+					// TODO: 释放未托管的资源(未托管的对象)并在以下内容中替代终结器。
+					// TODO: 将大型字段设置为 null。
+					this.gChannel = null;
+					this.imgChannelIcon = null;
+                    this.tbChannelName = null;
+					this.tbLatestMessageContent = null;
+                    this.lblLatestMessageTime = null;
+					this.brdrNewMessageBubble = null;
+                    this.tbNewMessageCount = null;
+					this.svMessageRecord = null;
+					this.tbMessageRecord = null;
+					this.svMessage = null;
+					this.txtMessage = null;
+
+					disposedValue = true;
+				}
+			}
+
+			// TODO: 仅当以上 Dispose(bool disposing) 拥有用于释放未托管资源的代码时才替代终结器。
+			~BindingControlSet() {
+			  // 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
+			  Dispose(false);
+			}
+
+			// 添加此代码以正确实现可处置模式。
+			public void Dispose()
+			{
+				// 请勿更改此代码。将清理代码放入以上 Dispose(bool disposing) 中。
+				Dispose(true);
+				// TODO: 如果在以上内容中替代了终结器，则取消注释以下行。
+				// GC.SuppressFinalize(this);
+			}
+			#endregion
 		}
 	}
 }

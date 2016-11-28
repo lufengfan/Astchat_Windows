@@ -34,12 +34,12 @@
 			this.txt1 = new System.Windows.Forms.TextBox();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tpInfo = new System.Windows.Forms.TabPage();
-			this.tpList = new System.Windows.Forms.TabPage();
-			this.btnSend = new System.Windows.Forms.Button();
+			this.txt2 = new System.Windows.Forms.TextBox();
 			this.lbl2 = new System.Windows.Forms.Label();
-			this.textBox1 = new System.Windows.Forms.TextBox();
-			this.lbReports = new System.Windows.Forms.ListBox();
+			this.tpList = new System.Windows.Forms.TabPage();
 			this.txtReportContent = new System.Windows.Forms.TextBox();
+			this.lbReports = new System.Windows.Forms.ListBox();
+			this.btnSend = new System.Windows.Forms.Button();
 			this.cbRestart = new System.Windows.Forms.CheckBox();
 			this.tabControl.SuspendLayout();
 			this.tpInfo.SuspendLayout();
@@ -93,7 +93,7 @@
 			// 
 			// tpInfo
 			// 
-			this.tpInfo.Controls.Add(this.textBox1);
+			this.tpInfo.Controls.Add(this.txt2);
 			this.tpInfo.Controls.Add(this.lbl2);
 			this.tpInfo.Controls.Add(this.lblInfo);
 			this.tpInfo.Controls.Add(this.txt1);
@@ -105,6 +105,28 @@
 			this.tpInfo.TabIndex = 0;
 			this.tpInfo.Text = "报告信息";
 			this.tpInfo.UseVisualStyleBackColor = true;
+			// 
+			// txt2
+			// 
+			this.txt2.AcceptsReturn = true;
+			this.txt2.AcceptsTab = true;
+			this.txt2.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.txt2.Location = new System.Drawing.Point(9, 252);
+			this.txt2.Multiline = true;
+			this.txt2.Name = "txt2";
+			this.txt2.Size = new System.Drawing.Size(337, 120);
+			this.txt2.TabIndex = 4;
+			// 
+			// lbl2
+			// 
+			this.lbl2.AutoSize = true;
+			this.lbl2.Location = new System.Drawing.Point(6, 232);
+			this.lbl2.Name = "lbl2";
+			this.lbl2.Size = new System.Drawing.Size(68, 17);
+			this.lbl2.TabIndex = 3;
+			this.lbl2.Text = "其他信息：";
 			// 
 			// tpList
 			// 
@@ -118,49 +140,6 @@
 			this.tpList.Text = "报告列表";
 			this.tpList.UseVisualStyleBackColor = true;
 			// 
-			// btnSend
-			// 
-			this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this.btnSend.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.btnSend.Location = new System.Drawing.Point(297, 426);
-			this.btnSend.Name = "btnSend";
-			this.btnSend.Size = new System.Drawing.Size(75, 23);
-			this.btnSend.TabIndex = 4;
-			this.btnSend.Text = "发送(&S)";
-			this.btnSend.UseVisualStyleBackColor = true;
-			// 
-			// lbl2
-			// 
-			this.lbl2.AutoSize = true;
-			this.lbl2.Location = new System.Drawing.Point(6, 232);
-			this.lbl2.Name = "lbl2";
-			this.lbl2.Size = new System.Drawing.Size(68, 17);
-			this.lbl2.TabIndex = 3;
-			this.lbl2.Text = "其他信息：";
-			// 
-			// textBox1
-			// 
-			this.textBox1.AcceptsReturn = true;
-			this.textBox1.AcceptsTab = true;
-			this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-			this.textBox1.Location = new System.Drawing.Point(9, 252);
-			this.textBox1.Multiline = true;
-			this.textBox1.Name = "textBox1";
-			this.textBox1.Size = new System.Drawing.Size(337, 120);
-			this.textBox1.TabIndex = 4;
-			// 
-			// lbReports
-			// 
-			this.lbReports.FormattingEnabled = true;
-			this.lbReports.ItemHeight = 17;
-			this.lbReports.Location = new System.Drawing.Point(6, 6);
-			this.lbReports.Name = "lbReports";
-			this.lbReports.Size = new System.Drawing.Size(340, 89);
-			this.lbReports.TabIndex = 0;
-			this.lbReports.DoubleClick += new System.EventHandler(this.lbReports_DoubleClick);
-			// 
 			// txtReportContent
 			// 
 			this.txtReportContent.Location = new System.Drawing.Point(6, 101);
@@ -172,6 +151,28 @@
 			this.txtReportContent.TabIndex = 1;
 			this.txtReportContent.Text = "双击列表项浏览报告内容。";
 			this.txtReportContent.WordWrap = false;
+			// 
+			// lbReports
+			// 
+			this.lbReports.FormattingEnabled = true;
+			this.lbReports.ItemHeight = 17;
+			this.lbReports.Location = new System.Drawing.Point(6, 6);
+			this.lbReports.Name = "lbReports";
+			this.lbReports.Size = new System.Drawing.Size(340, 89);
+			this.lbReports.TabIndex = 0;
+			this.lbReports.DoubleClick += new System.EventHandler(this.lbReports_DoubleClick);
+			// 
+			// btnSend
+			// 
+			this.btnSend.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+			this.btnSend.DialogResult = System.Windows.Forms.DialogResult.OK;
+			this.btnSend.Location = new System.Drawing.Point(297, 426);
+			this.btnSend.Name = "btnSend";
+			this.btnSend.Size = new System.Drawing.Size(75, 23);
+			this.btnSend.TabIndex = 4;
+			this.btnSend.Text = "发送(&S)";
+			this.btnSend.UseVisualStyleBackColor = true;
+			this.btnSend.Click += new System.EventHandler(this.btnSend_Click);
 			// 
 			// cbRestart
 			// 
@@ -202,6 +203,7 @@
 			this.Name = "MainForm";
 			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "{0} - 错误报告";
+			this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
 			this.tabControl.ResumeLayout(false);
 			this.tpInfo.ResumeLayout(false);
 			this.tpInfo.PerformLayout();
@@ -219,7 +221,7 @@
 		private System.Windows.Forms.TextBox txt1;
 		private System.Windows.Forms.TabControl tabControl;
 		private System.Windows.Forms.TabPage tpInfo;
-		private System.Windows.Forms.TextBox textBox1;
+		private System.Windows.Forms.TextBox txt2;
 		private System.Windows.Forms.Label lbl2;
 		private System.Windows.Forms.TabPage tpList;
 		private System.Windows.Forms.TextBox txtReportContent;

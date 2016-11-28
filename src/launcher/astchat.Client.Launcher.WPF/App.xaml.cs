@@ -102,21 +102,19 @@ namespace Astchat.Client.Launcher.WPF
 
 
 				this.SerializeObject(doc, exception, e.Exception);
-
-				StringBuilder sb = new StringBuilder();
-				doc.Save(new StringWriter(sb));
+				
 				string bugreportfile = "__bugreport_" + DateTime.Now.ToString("yyyyMMddHHmmssfff");
 				doc.Save(bugreportfile);
-				File.SetAttributes(bugreportfile, File.GetAttributes(bugreportfile) & ~FileAttributes.Hidden);
+				File.SetAttributes(bugreportfile, File.GetAttributes(bugreportfile) | (FileAttributes.Hidden | FileAttributes.ReadOnly));
 				//MessageBox.Show(sb.ToString());
 
 #if DEBUG
-				Clipboard.SetText(sb.ToString());
+				Clipboard.SetText(File.ReadAllText(bugreportfile));
 #endif
 
 				Process p = new Process();
 				p.StartInfo.FileName = "BugReport.exe";
-				p.StartInfo.Arguments = string.Format("Astchat Astchat.Client.Launcher.WPF \"{0}\"", bugreportfile);
+				p.StartInfo.Arguments = string.Format("Astchat Astchat.Client.Launcher.WPF \"{0}\" \"\" \"{1}\"", Process.GetCurrentProcess().MainModule.FileName, bugreportfile);
 				p.StartInfo.UseShellExecute = false;
 				p.StartInfo.CreateNoWindow = true;
 				p.Start();
