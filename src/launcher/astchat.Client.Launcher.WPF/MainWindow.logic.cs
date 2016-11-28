@@ -137,8 +137,8 @@ namespace Astchat.Client.Launcher.WPF
 									this.controlSetDic[channel].tbMessageRecord.Inlines.Add(new Run(message.Substring(index, match.Index - index)));
 
 								#region 加载emoji
-									#error 在这里设置表情框的大小。
-								Image img = new Image() { Width = 45, Height = 45, Stretch = Stretch.Fill };
+									//#error 在这里设置表情框的大小。
+								Image img = new Image() { Width = 25, Height = 25, Stretch = Stretch.Fill };
 								string uri = EmojiGallery.GetEmojiUri(EmojiGallery.EmojiDic[match.Groups["EmojiShortName"].Value].unicode);
 								if (true)
 									img.Source = new BitmapImage(new Uri(uri));
@@ -203,14 +203,7 @@ namespace Astchat.Client.Launcher.WPF
 				}));
 			};
 			ws.Connect();
-
-			RoutedEventHandler send = (sender, e) =>
-			{
-				manager.SendPureText(channel, this.controlSetDic[channel].txtMessage.Text);
-				this.Dispatcher.Invoke(new Action(() => this.controlSetDic[channel].txtMessage.Clear()));
-			};
-
-			this.btnSend.Click += send;
+			
 			this.controlSetDic[channel].txtMessage.KeyDown += (sender, e) =>
 			{
 				if (e.Key == Key.Enter)
@@ -225,9 +218,16 @@ namespace Astchat.Client.Launcher.WPF
 							txtMessage.SelectionStart += newline.Length;
 						}));
 					else
-						send(sender, null);
+					{
+						this.sendInternal(channel);
+					}
 				}
 			};
+			this.controlSetDic[channel].txtMessage.TextChanged += (sender, e) =>
+			  {
+				  if (this.popupMessageEmpty.IsOpen)
+					  this.popupMessageEmpty.IsOpen = false;
+			  };
 
 			this.Closing += (sender, e) =>
 			{
@@ -242,9 +242,11 @@ namespace Astchat.Client.Launcher.WPF
 			channel = channel.Trim().ToLower();
 
 			if (!this.controlSetDic.ContainsKey(channel)) return;
-
+			
 			manager.RemoveChannel(channel);
 			this.removeChannelControls(channel);
+
+			this.setCurrentChannel(null);
 		}
 
 		private void setCurrentChannel(string channel)

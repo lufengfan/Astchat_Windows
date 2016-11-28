@@ -13,7 +13,7 @@
         AllowsTransparency="True"
         WindowStyle="None"
         WindowStartupLocation="CenterScreen"
-        SizeChanged="Window_SizeChanged">
+        SizeChanged="Window_SizeChanged" Icon="SamLu.ico">
     <Window.Resources>
         <system:Double x:Key="Window_Border_Thickness">5</system:Double>
 
@@ -438,7 +438,19 @@
                             </ScrollViewer>
                             -->
 
-                            <Button x:Name="btnSend" Grid.Row="2" HorizontalAlignment="Right" Margin="15"  Padding="10,2.5">发送(S)</Button>
+                            <Button x:Name="btnSend" Grid.Row="2" HorizontalAlignment="Right" Margin="15"  Padding="10,2.5" Click="btnSend_Click">发送(S)</Button>
+                            <Popup x:Name="popupMessageEmpty"
+                                   AllowsTransparency="True"
+                                   PopupAnimation="Fade"
+                                   PlacementTarget="{Binding ElementName=btnSend}"
+                                   Placement="Top"
+                                   StaysOpen="False"
+                                   IsOpen="False">
+                                <Border BorderBrush="Gray" BorderThickness="1"
+                                        Background="White" Padding="5">
+                                    <TextBlock Text="发送内容不能为空！"></TextBlock>
+                                </Border>
+                            </Popup>
                         </Grid>
                     </Grid>
                 </Grid>

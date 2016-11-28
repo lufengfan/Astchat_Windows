@@ -68,6 +68,7 @@ namespace Astchat.Client
 		{
 			const string emoji_directory = @"emojis";
 			const string emoji_host = @"https://cdn.jsdelivr.net/emojione/assets/png/";
+			//const string emoji_host = @"https://raw.githubusercontent.com/Ranks/emojione/master/assets/png_512x512/";
 
 			string uri = Path.Combine(Path.Combine(AppDomain.CurrentDomain.BaseDirectory, emoji_directory), unicode + ".png");
 			if (File.Exists(uri))
